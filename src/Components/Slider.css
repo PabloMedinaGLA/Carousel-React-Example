@@ -18,6 +18,12 @@
     overflow: hidden;
 }
 
+#no-found {
+    position: absolute;
+    top: 45%;
+    left: 35%;
+}
+
 .active {
     display: inline-block;
 }

@@ -20,6 +20,15 @@ function Slider(props) {
     useEffect(() => { //Se llama al montarse el componente
         initCats();
     }, [])
+
+    if (!cats.length) {
+        return (
+            <div className='slider-container'>
+                <h1 id='no-found'>No imagenes registradas</h1>
+                <Arrows />
+            </div>
+        )
+    }
         
     return (
         <div className='slider-container'>
