@@ -1,38 +1,74 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Slider from './Components/Slider';
 import Gallery from './Components/Gallery';
+import AgregarImagen from './Components/AgregarImagen';
+import './App.css';
+import { getCarrusel } from './Components/utilidades';
+
 
 
 function App() {
 
-  const Home = () => <Slider />
+  const [cats, setCat] = useState([]); //OK -> [cats, setCats] 
 
-  const Galeria = () => <Gallery />
+    const initCats = () => {
+        getCarrusel().then((res) => {
+            setCat(res);
+        })
+    }
 
-  const [page, setPage] = useState('home');
+    
+
+    useEffect(() => { //Se llama al montarse el componente
+        initCats();
+    }, [])
+
+  
+
+  const [modal, setModal] = useState(false);
+
+
+  const [page, setPage] = useState(() => {
+    const { pathname } = window.location
+    const page = pathname.slice(1)
+    return page;
+  });
 
   const getContent = () => {
-    if (page === 'home') {
+    if (page === 'galeria') {
       return (
         <main>
-          <Slider />
-          <a href='#' onClick={toPage('galeria')}> Agregar </a>
+          <div className='container-button'>
+            <button className='button-galeria' onClick={() => setModal(!modal)}>Agregar</button>
+          </div>
+          <Gallery cats = {cats} />
+          <AgregarImagen estado = {modal} setEstado = {setModal} />
         </main>
       )
+    } else {
+      return (
+        <main>
+          <Slider cats = {cats} setCat = {setCat} />
+          <div className='container-button'>
+            <a className='button-home' href='#' onClick={toPage('galeria')}> Agregar </a>
 
-    } else if (page === 'galeria') {
-      return <Gallery />
+          </div>
+        </main>
+      )
     }
   }
   const toPage = page => event => {
     event.preventDefault()
+    window.history.pushState(null, '', `/${page}`)
     setPage(page)
   }
 
   return (
     <div>
       <header>
-        <a href='#' onClick={toPage('home')}> Home </a>
+        <div className='container-header'>
+          <a className='button-header' href='#' onClick={toPage('home')}> Home </a>
+        </div>
       </header>
       {getContent()}
     </div>

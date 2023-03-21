@@ -7,7 +7,7 @@ function SliderContent({ activeIndex, imageSlider }) {
         <section>
             {imageSlider.map((slide, index) =>
                 <div key={index} className={index === activeIndex ? "slides active": "inactive"}>
-                    <img className='slide-image' src={slide.img} alt="imagen gato"/>
+                    <img className='slide-image' src={slide.url} alt="imagen gato"/>
                 </div>
 
             )}

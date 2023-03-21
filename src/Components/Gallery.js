@@ -1,35 +1,56 @@
-import React, { useState , useEffect } from 'react';
-import { getCats } from './utilidades';
+import React, { useState, useEffect } from 'react';
+import { getGaleria } from './utilidades';
 import './Gallery.css'
+import axios from 'axios';
 
-function Gallery() {
+function Gallery({ cats }) {
 
-    const [cats, setCat] = useState([]);
+    const [elements, setElements] = useState([]);
 
-    const initCats = () => {
-        getCats().then((res) => {
-            setCat(res);
+    const Elements = () => {
+        getGaleria().then((res) => {
+            setElements(res);
         })
     }
     useEffect(() => { //Se llama al montarse el componente
-        initCats();
+        Elements();
     }, [])
-    console.log(cats)
+
+    async function MoveElement(cat) {
+        await axios.post("http://localhost:3000/carrusel", cat)
+    }
+
+    const filterElements = elements.filter(function (item) {
+
+        for (const e of cats) {
+
+            if (item.id === e.id)
+                return false;
+        }
+        
+        return true
+
+    })
+    function viewFilterElements() {
+        
+        return filterElements.map((elements) => {
+            return (
+                <li onClick={() => MoveElement(elements)} key={elements.id}>
+                    <img src={elements.url} alt='imagen gato' />
+                </li>
+            )
+        })
+
+    }
+    
+    
 
     return (
         <div>
 
             <ul className='container-images'>
                 {
-                    cats.map((cat, i) => {
-                        return (
-                            <li key={i}>
-                                <img src={cat.img} alt='imagen gato'/>
-                            </li>
-
-                        )
-                    })
-
+                    viewFilterElements()
                 }
             </ul>
 

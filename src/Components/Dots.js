@@ -1,14 +1,16 @@
 import React from 'react';
 
-function Dots({activeIndex, onclick, imagenSlider}) {
+function Dots({ activeIndex, onClick, imageSlider }) {
     //imagenSlider -> es el array con objectos 
-    return <div className='All-dots'>
-        {imagenSlider && imagenSlider?.map((slide, index) => (
-            <span key={index} className={`${activeIndex === index ? "dot active-dot" : "dot"}`}
-                onclick={() => onclick(index)}
-            ></span>
-        ))}
-    </div>
+    return (
+        <div className='all-dots'>
+            {imageSlider && imageSlider?.map((slide, index) => (
+                <span key={index} className={`${activeIndex === index ? "dot active-dot" : "dot"}`}
+                    onClick={() => onClick(index)}
+                ></span>
+            ))}
+        </div>
+    )
 }
 
 export default Dots;
